@@ -9,7 +9,7 @@ int trig1 = 2, echo1 = 4, trig2 = 7, echo2 = 8, trig3 = 10, echo3 = 11;
 
 float duration;
 float distance1, distance2, distance3;
-const float set_distance1 = 15, set_distance2 = 15, set_distance3 = 15;
+const float set_distance1 = 35, set_distance2 = 35, set_distance3 = 35;
 
 void setup() {
     Serial.begin(9600);
