@@ -1,5 +1,5 @@
 // Motor speed control for forward-backward and left-right.
-int FB_speed = 70, LR_speed = 70;
+int FB_speed = 100, LR_speed = 150;
 
 // Pins to control the direction for motors rotation
 int pin1 = 3, pin2 = 5, pin3 = 6, pin4 = 9;
@@ -55,25 +55,27 @@ void self_driving() {
 }
 
 void move_forward() {
-    analogWrite(pin1, LR_speed);
-    analogWrite(pin2, LOW);
-    analogWrite(pin3, LR_speed);
-    analogWrite(pin4, LOW);
+
+         analogWrite(pin1, LOW);
+        analogWrite(pin2, FB_speed);
+        analogWrite(pin3, LOW);
+        analogWrite(pin4, FB_speed);
+    
     Serial.println("Forward");
 }
 
 void turn_right() {
-    analogWrite(pin1, FB_speed);
+    analogWrite(pin1, LR_speed);
     analogWrite(pin2, LOW);
     analogWrite(pin3, LOW);
-    analogWrite(pin4, FB_speed);
+    analogWrite(pin4, LR_speed);
     Serial.println("Right");
 }
 
 void turn_left() {
     analogWrite(pin1, LOW);
-    analogWrite(pin2, FB_speed);
-    analogWrite(pin3, FB_speed);
+    analogWrite(pin2, LR_speed);
+    analogWrite(pin3, LR_speed);
     analogWrite(pin4, LOW);
     Serial.println("Left");
 }
@@ -90,9 +92,9 @@ void move_backward_until_clear() {
         }
 
         // Move backward
-        analogWrite(pin1, LR_speed);
+        analogWrite(pin1, FB_speed);
         analogWrite(pin2, LOW);
-        analogWrite(pin3, LR_speed);
+        analogWrite(pin3, FB_speed);
         analogWrite(pin4, LOW);
         Serial.println("Reverse");
     }
