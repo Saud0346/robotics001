@@ -5,12 +5,12 @@ const int motor2Pin1 = 9;  // Motor 2 control pin 1
 const int motor2Pin2 = 10; // Motor 2 control pin 2
 
 // IR sensor pins
-const int leftIRPin = A0;
-const int centerIRPin = A1;
-const int rightIRPin = A2;
+const int leftIRPin = 2;
+const int centerIRPin = 3;
+const int rightIRPin = 4;
 
 // Threshold for IR sensor
-const int threshold = 500;
+const int car_speed = 150;
 
 void setup() {
   // Set motor control pins as outputs
@@ -29,9 +29,9 @@ void setup() {
 
 void loop() {
   // Read IR sensor values
-  int leftValue = analogRead(leftIRPin);
-  int centerValue = analogRead(centerIRPin);
-  int rightValue = analogRead(rightIRPin);
+  int leftValue   =   digitalRead(leftIRPin);
+  int centerValue =   digitalRead(centerIRPin);
+  int rightValue  =   digitalRead(rightIRPin);
 
   // Print sensor values for debugging
   Serial.print("Left: ");
@@ -42,13 +42,13 @@ void loop() {
   Serial.println(rightValue);
 
   // Line following logic
-  if (centerValue < threshold) {
+  if (leftValue ==0 &&centerValue ==1 && rightValue==0) {
     // Move forward
     moveForward();
-  } else if (leftValue < threshold) {
+  } else if (leftValue ==1 && centerValue ==1&& rightValue==0) {
     // Turn left
     turnLeft();
-  } else if (rightValue < threshold) {
+  } else if (rightValue ==1&&centerValue ==1 && leftValue==0) {
     // Turn right
     turnRight();
   } else {
@@ -60,24 +60,26 @@ void loop() {
 }
 
 void moveForward() {
-  digitalWrite(motor1Pin1, HIGH);
-  digitalWrite(motor1Pin2, LOW);
-  digitalWrite(motor2Pin1, HIGH);
-  digitalWrite(motor2Pin2, LOW);
+  analogWrite(motor1Pin1, LOW);
+  analogWrite(motor1Pin2, car_speed);
+  analogWrite(motor2Pin1, LOW);
+  analogWrite(motor2Pin2, car_speed);
+
 }
 
 void turnLeft() {
-  digitalWrite(motor1Pin1, LOW);
-  digitalWrite(motor1Pin2, HIGH);
-  digitalWrite(motor2Pin1, HIGH);
-  digitalWrite(motor2Pin2, LOW);
+
+  analogWrite(motor1Pin1, car_speed);
+  analogWrite(motor1Pin2, LOW);
+  analogWrite(motor2Pin1, LOW);
+  analogWrite(motor2Pin2, car_speed);
 }
 
 void turnRight() {
-  digitalWrite(motor1Pin1, HIGH);
-  digitalWrite(motor1Pin2, LOW);
-  digitalWrite(motor2Pin1, LOW);
-  digitalWrite(motor2Pin2, HIGH);
+  analogWrite(motor1Pin1, LOW);
+  analogWrite(motor1Pin2, car_speed);
+  analogWrite(motor2Pin1, car_speed);
+  analogWrite(motor2Pin2, LOW);
 }
 
 void stopMotors() {
