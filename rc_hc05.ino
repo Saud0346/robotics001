@@ -1,17 +1,10 @@
-#include <SoftwareSerial.h>
-
-// Define Bluetooth module pins
-const int bluetoothTx = 0; // Bluetooth TX to Arduino RX (pin 2)
-const int bluetoothRx = 1; // Bluetooth RX to Arduino TX (pin 3)
-
-// Create a SoftwareSerial object for Bluetooth communication
-SoftwareSerial bluetooth(bluetoothTx, bluetoothRx);
-
 // Motor control pins
 const int motor1Pin1 = 5; // Motor 1 control pin 1
 const int motor1Pin2 = 6; // Motor 1 control pin 2
 const int motor2Pin1 = 9; // Motor 2 control pin 1
 const int motor2Pin2 = 10; // Motor 2 control pin 2
+
+int car_speed=0;
 
 void setup() {
   // Set motor control pins as outputs
@@ -22,14 +15,14 @@ void setup() {
 
   // Start serial communication with Bluetooth module
   Serial.begin(9600);
-  bluetooth.begin(9600); // baud rate for Bluetooth communication
+ // baud rate for Bluetooth communication
 }
 
 void loop() {
   // Check if data is available to read from Bluetooth module
-  if (bluetooth.available()) {
-    char command = bluetooth.read(); // Read the incoming command
-
+  if (Serial.available()>0) {
+    char command = Serial.read(); // Read the incoming command
+    speed_controle(command);
     // Process the received command
     switch (command) {
       case 'F':
@@ -47,43 +40,122 @@ void loop() {
       case 'S':
         stopMotors();
         break;
+      case 'G':
+        moveForward_L();
+        break;
+      case 'I':
+        moveForward_R();
+        break;
+      case 'H':
+        moveBackward_R();
+        break;
+      case 'J':
+        moveBackward_L();
+        break;
       default:
         break;
     }
   }
 }
+void speed_controle(char &command)
+{
+  switch(command)
+  {
+    case '0':
+    car_speed = 0;
+    break;
+    case '1':
+    car_speed = 25;
+    break;
+    case '2':
+    car_speed = 50;
+    break;
+    case '3':
+    car_speed = 75;
+    break;
+    case '4':
+    car_speed = 100;
+    break;
+    case '5':
+    car_speed = 125;
+    break;
+    case '6':
+    car_speed = 150;
+    break;
+    case '7':
+    car_speed = 175;
+    break;
+    case '8':
+    car_speed = 200;
+    break;
+    case '9':
+    car_speed = 255;
+    break;
+  }
 
-void moveForward() {
-  digitalWrite(motor1Pin1, HIGH);
-  digitalWrite(motor1Pin2, LOW);
-  digitalWrite(motor2Pin1, HIGH);
-  digitalWrite(motor2Pin2, LOW);
 }
+void turnLeft() {
+  analogWrite(motor1Pin1, car_speed);
+  analogWrite(motor1Pin2, LOW);
+  analogWrite(motor2Pin1, car_speed);
+  analogWrite(motor2Pin2, LOW);
+}
+
+void  turnRight(){
+  analogWrite(motor1Pin1, LOW);
+  analogWrite(motor1Pin2, car_speed);
+  analogWrite(motor2Pin1, LOW);
+  analogWrite(motor2Pin2, car_speed);
+}
+
+
 
 void moveBackward() {
-  digitalWrite(motor1Pin1, LOW);
-  digitalWrite(motor1Pin2, HIGH);
-  digitalWrite(motor2Pin1, LOW);
-  digitalWrite(motor2Pin2, HIGH);
+  analogWrite(motor1Pin1, LOW);
+  analogWrite(motor1Pin2, car_speed);
+  analogWrite(motor2Pin1, car_speed);
+  analogWrite(motor2Pin2, LOW);
 }
 
-void turnLeft() {
-  digitalWrite(motor1Pin1, LOW);
-  digitalWrite(motor1Pin2, HIGH);
-  digitalWrite(motor2Pin1, HIGH);
-  digitalWrite(motor2Pin2, LOW);
+void moveBackward_L() {
+  analogWrite(motor1Pin1, LOW);
+  analogWrite(motor1Pin2, car_speed/4);
+  analogWrite(motor2Pin1, car_speed);
+  analogWrite(motor2Pin2, LOW);
 }
 
-void turnRight() {
-  digitalWrite(motor1Pin1, HIGH);
-  digitalWrite(motor1Pin2, LOW);
-  digitalWrite(motor2Pin1, LOW);
-  digitalWrite(motor2Pin2, HIGH);
+void moveBackward_R() {
+  analogWrite(motor1Pin1, LOW);
+  analogWrite(motor1Pin2, car_speed);
+  analogWrite(motor2Pin1, car_speed/4);
+  analogWrite(motor2Pin2, LOW);
+}
+
+
+void moveForward(){
+  analogWrite(motor1Pin1, car_speed);
+  analogWrite(motor1Pin2, LOW);
+  analogWrite(motor2Pin1, LOW);
+  analogWrite(motor2Pin2, car_speed);
+}
+
+void moveForward_R(){
+  analogWrite(motor1Pin1, car_speed/4);
+  analogWrite(motor1Pin2, LOW);
+  analogWrite(motor2Pin1, LOW);
+  analogWrite(motor2Pin2, car_speed);
+}
+
+void moveForward_L(){
+  analogWrite(motor1Pin1, car_speed);
+  analogWrite(motor1Pin2, LOW);
+  analogWrite(motor2Pin1, LOW);
+  analogWrite(motor2Pin2, car_speed/4);
 }
 
 void stopMotors() {
-  digitalWrite(motor1Pin1, LOW);
-  digitalWrite(motor1Pin2, LOW);
-  digitalWrite(motor2Pin1, LOW);
-  digitalWrite(motor2Pin2, LOW);
+  analogWrite(motor1Pin1, LOW);
+  analogWrite(motor1Pin2, LOW);
+  analogWrite(motor2Pin1, LOW);
+  analogWrite(motor2Pin2, LOW);
 }
