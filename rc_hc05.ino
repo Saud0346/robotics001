@@ -1,8 +1,8 @@
 #include <SoftwareSerial.h>
 
 // Define Bluetooth module pins
-const int bluetoothTx = 2; // Bluetooth TX to Arduino RX (pin 2)
-const int bluetoothRx = 3; // Bluetooth RX to Arduino TX (pin 3)
+const int bluetoothTx = 0; // Bluetooth TX to Arduino RX (pin 2)
+const int bluetoothRx = 1; // Bluetooth RX to Arduino TX (pin 3)
 
 // Create a SoftwareSerial object for Bluetooth communication
 SoftwareSerial bluetooth(bluetoothTx, bluetoothRx);
