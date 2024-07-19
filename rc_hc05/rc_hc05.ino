@@ -4,6 +4,7 @@ const int motor1Pin2 = 6; // Motor 1 control pin 2
 const int motor2Pin1 = 9; // Motor 2 control pin 1
 const int motor2Pin2 = 10; // Motor 2 control pin 2
 
+
 int car_speed=0;
 
 void setup() {
@@ -15,7 +16,7 @@ void setup() {
 
   // Start serial communication with Bluetooth module
   Serial.begin(9600);
- // baud rate for Bluetooth communication
+
 }
 
 void loop() {
@@ -94,9 +95,16 @@ void speed_controle(char &command)
   }
 
 }
-void turnLeft() {
+void moveForward() {
   analogWrite(motor1Pin1, car_speed);
   analogWrite(motor1Pin2, LOW);
+  analogWrite(motor2Pin1, car_speed);
+  analogWrite(motor2Pin2, LOW);
+}
+
+void moveBackward() {
+  analogWrite(motor1Pin1, LOW);
+  analogWrite(motor1Pin2, car_speed);
   analogWrite(motor2Pin1, car_speed);
   analogWrite(motor2Pin2, LOW);
 }
@@ -108,49 +116,40 @@ void  turnRight(){
   analogWrite(motor2Pin2, car_speed);
 }
 
-
-
-void moveBackward() {
-  analogWrite(motor1Pin1, LOW);
-  analogWrite(motor1Pin2, car_speed);
+void moveForward(){
+  analogWrite(motor1Pin1, car_speed);
+  analogWrite(motor1Pin2, LOW);
   analogWrite(motor2Pin1, car_speed);
   analogWrite(motor2Pin2, LOW);
 }
 
 void moveBackward_L() {
   analogWrite(motor1Pin1, LOW);
-  analogWrite(motor1Pin2, car_speed/4);
-  analogWrite(motor2Pin1, car_speed);
-  analogWrite(motor2Pin2, LOW);
-}
-
-void moveBackward_R() {
-  analogWrite(motor1Pin1, LOW);
   analogWrite(motor1Pin2, car_speed);
   analogWrite(motor2Pin1, car_speed/4);
   analogWrite(motor2Pin2, LOW);
 }
 
-
-void moveForward(){
-  analogWrite(motor1Pin1, car_speed);
-  analogWrite(motor1Pin2, LOW);
-  analogWrite(motor2Pin1, LOW);
-  analogWrite(motor2Pin2, car_speed);
+void moveBackward_R() {
+  analogWrite(motor1Pin1, LOW);
+  analogWrite(motor1Pin2, car_speed/4);
+  analogWrite(motor2Pin1, car_speed);
+  analogWrite(motor2Pin2, LOW);
 }
+
 
 void moveForward_R(){
   analogWrite(motor1Pin1, car_speed/4);
   analogWrite(motor1Pin2, LOW);
-  analogWrite(motor2Pin1, LOW);
-  analogWrite(motor2Pin2, car_speed);
+  analogWrite(motor2Pin1, car_speed);
+  analogWrite(motor2Pin2, LOW);
 }
 
 void moveForward_L(){
   analogWrite(motor1Pin1, car_speed);
   analogWrite(motor1Pin2, LOW);
-  analogWrite(motor2Pin1, LOW);
-  analogWrite(motor2Pin2, car_speed/4);
+  analogWrite(motor2Pin1, car_speed/4);
+  analogWrite(motor2Pin2, LOW);
 }
 
 void stopMotors() {

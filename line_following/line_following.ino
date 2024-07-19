@@ -5,11 +5,11 @@ const int motor2Pin1 = 9;  // Motor 2 control pin 1
 const int motor2Pin2 = 10; // Motor 2 control pin 2
 
 // IR sensor pins
-const int leftIRPin = 2;
-const int centerIRPin = 3;
-const int rightIRPin = 4;
+const int leftIRPin   =   2;
+const int centerIRPin =   3;
+const int rightIRPin  =   4;
 
-// Threshold for IR sensor
+// Threshold for car speed max speed is 255
 const int car_speed = 150;
 
 void setup() {
@@ -20,14 +20,15 @@ void setup() {
   pinMode(motor2Pin2, OUTPUT);
 
   // Set IR sensor pins as inputs
-  pinMode(leftIRPin, INPUT);
+  pinMode(leftIRPin  , INPUT);
   pinMode(centerIRPin, INPUT);
-  pinMode(rightIRPin, INPUT);
+  pinMode(rightIRPin , INPUT);
 
   Serial.begin(9600); // Start serial communication for debugging
 }
 
 void loop() {
+
   // Read IR sensor values
   int leftValue   =   digitalRead(leftIRPin);
   int centerValue =   digitalRead(centerIRPin);
@@ -42,44 +43,37 @@ void loop() {
   Serial.println(rightValue);
 
   // Line following logic
-  if (leftValue ==0 &&centerValue ==1 && rightValue==0) {
-    // Move forward
-    moveForward();
-  } else if (leftValue ==1 && centerValue ==1&& rightValue==0) {
-    // Turn left
-    turnLeft();
-  } else if (rightValue ==1&&centerValue ==1 && leftValue==0) {
-    // Turn right
-    turnRight();
-  } else {
-    // Stop
-    stopMotors();
-  }
-
+  if (leftValue ==0 &&centerValue ==1 && rightValue==0)
+    moveForward();// Move forward
+  else if (leftValue ==1 && centerValue ==1&& rightValue==0)
+    turnLeft();// Turn left
+  else if (rightValue ==1&&centerValue ==1 && leftValue==0)
+    turnRight();// Turn right
+  else 
+    stopMotors();// Stop
+  
   delay(10); // Short delay to stabilize readings
 }
 
 void moveForward() {
-  analogWrite(motor1Pin1, LOW);
-  analogWrite(motor1Pin2, car_speed);
-  analogWrite(motor2Pin1, LOW);
-  analogWrite(motor2Pin2, car_speed);
-
+  analogWrite(motor1Pin1, car_speed);
+  analogWrite(motor1Pin2, LOW);
+  analogWrite(motor2Pin1, car_speed);
+  analogWrite(motor2Pin2, LOW);
 }
 
 void turnLeft() {
-
   analogWrite(motor1Pin1, car_speed);
   analogWrite(motor1Pin2, LOW);
-  analogWrite(motor2Pin1, LOW);
-  analogWrite(motor2Pin2, car_speed);
+  analogWrite(motor2Pin1, car_speed);
+  analogWrite(motor2Pin2, LOW);
 }
 
 void turnRight() {
   analogWrite(motor1Pin1, LOW);
   analogWrite(motor1Pin2, car_speed);
-  analogWrite(motor2Pin1, car_speed);
-  analogWrite(motor2Pin2, LOW);
+  analogWrite(motor2Pin1, LOW);
+  analogWrite(motor2Pin2, car_speed);
 }
 
 void stopMotors() {
