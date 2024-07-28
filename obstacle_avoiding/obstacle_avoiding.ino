@@ -14,7 +14,6 @@ const float set_distance1 = 35, set_distance2 = 35, set_distance3 = 35;
 
 void setup() {
     Serial.begin(9600);
-
     // Set motor control pins as outputs
     pinMode(pin1, OUTPUT);
     pinMode(pin2, OUTPUT);
@@ -30,7 +29,8 @@ void setup() {
     pinMode(echo3, INPUT);
 }
 
-void loop() {
+void loop() 
+{
     self_driving();
 }
 
