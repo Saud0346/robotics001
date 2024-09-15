@@ -53,8 +53,8 @@ void self_driving() {
 void move_forward() {
     analogWrite(pin1, FB_speed);
     analogWrite(pin2, LOW);
-    analogWrite(pin3, FB_speed);
-    analogWrite(pin4, LOW);
+    analogWrite(pin3, LOW);
+    analogWrite(pin4, FB_speed);
     
     Serial.println("Forward");
 }

@@ -58,8 +58,8 @@ void loop() {
 void moveForward() {
   analogWrite(motor1Pin1, car_speed);
   analogWrite(motor1Pin2, LOW);
-  analogWrite(motor2Pin1, car_speed);
-  analogWrite(motor2Pin2, LOW);
+  analogWrite(motor2Pin1, LOW);
+  analogWrite(motor2Pin2, car_speed);
 }
 
 void turnLeft() {
